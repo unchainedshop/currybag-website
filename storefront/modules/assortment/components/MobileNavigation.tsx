@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import getConfig from 'next/config';
 import { useIntl } from 'react-intl';
+
 import useCategoriesTree from '../hooks/useCategoriesTree';
 import Icon from '../../common/components/Icon';
 import Thumbnail from '../../common/components/thumbnail';
 import changeLanguage from '../../common/utils/changeLanguage';
+import LocalizedLink from '../../common/components/LocalizedLink';
 
-const createPathFromArray = (path = []) => {
-  return `/${(path || []).join('/')}`;
-};
+const createPathFromArray = (path = []) => `/${(path || []).join('/')}`;
 
 const {
   publicRuntimeConfig: { theme },
@@ -53,7 +52,7 @@ const Subtree = ({
       </button>
       {showSubtree ? (
         <div>
-          <Link href={createPathFromArray(path)}>
+          <LocalizedLink href={createPathFromArray(path)}>
             <a
               className={`border-top d-block text-uppercase link ${
                 levelClassMap[level + 1]
@@ -61,12 +60,10 @@ const Subtree = ({
             >
               {intl.formatMessage({ id: 'show_all' })}
             </a>
-          </Link>
+          </LocalizedLink>
 
           {Object.entries(children)
-            .sort(([, aNode], [, bNode]) => {
-              return aNode?.index - bNode.index;
-            })
+            .sort(([, aNode], [, bNode]) => aNode?.index - bNode.index)
             .map(([subPageId, node]) => (
               <Subtree
                 path={node?.path}
@@ -83,20 +80,22 @@ const Subtree = ({
       )}
     </div>
   ) : (
-    <Link href={createPathFromArray(path)}>
+    <LocalizedLink href={createPathFromArray(path)}>
       <a
         className={`border-top d-block text-uppercase ${levelClassMap[level]}`}
       >
         <Thumbnail media={media} />
         {navigationTitle}
       </a>
-    </Link>
+    </LocalizedLink>
   );
 };
 
 const MobileNavigation = ({ doClose, isNavOpen }) => {
   const intl = useIntl();
-  const { assortmentTree } = useCategoriesTree({ root: 'shop' });
+  const { assortmentTree } = useCategoriesTree({
+    root: 'shop',
+  });
 
   return (
     <div className="mobile-menu-holder" data-is-open={isNavOpen}>
@@ -129,7 +128,6 @@ const MobileNavigation = ({ doClose, isNavOpen }) => {
               subtree={node?.children}
               key={pageId}
               pageId={pageId}
-              intl
               {...node}
             />
           ))}

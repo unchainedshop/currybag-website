@@ -33,13 +33,15 @@ const SignUp = () => {
   const { updateCart } = useUpdateCart();
   const { createUser, error: formError } = useCreateUser();
   const hasErrors = Object.keys(errors).length;
+  const reviewPath = '/review';
 
   useEffect(() => {
     if (formError?.message?.includes('Email already exists.')) {
-      setError(
-        'emailAddress',
-        { type: 'manual', message: '👬 User with the same email already exists. Please login', shouldFocus: true }
-      );
+      setError('emailAddress', {
+        type: 'manual',
+        message: '👬 User with the same email already exists. Please login',
+        shouldFocus: true,
+      });
     }
   }, [formError]);
 
@@ -61,9 +63,16 @@ const SignUp = () => {
   }) => {
     if (account) {
       if (password !== password2) {
-
-        setError('password',{ type: 'manual', message: `👬 ${intl.formatMessage({ id: 'password_not_match' })}`, shouldFocus: true });
-        setError('password2',{ type: 'manual', message: `👬 ${intl.formatMessage({ id: 'password_not_match' })}`, shouldFocus: true });
+        setError('password', {
+          type: 'manual',
+          message: `👬 ${intl.formatMessage({ id: 'password_not_match' })}`,
+          shouldFocus: true,
+        });
+        setError('password2', {
+          type: 'manual',
+          message: `👬 ${intl.formatMessage({ id: 'password_not_match' })}`,
+          shouldFocus: true,
+        });
         return false;
       }
       try {
@@ -101,11 +110,11 @@ const SignUp = () => {
       },
     });
 
-    router.push('/review');
+    router.push(reviewPath);
     return true;
   };
 
-  const onLogin = () => router.push('/review');
+  const onLogin = () => router.push(reviewPath);
 
   return (
     <>

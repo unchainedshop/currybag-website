@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useIntl } from 'react-intl';
 
 import DesktopNavigationContext from './DesktopNavigationContext';
 import MegaDropdown from './MegaDropdown';
 import useCategoriesTree from '../hooks/useCategoriesTree';
 import Icon from '../../common/components/Icon';
+import LocalizedLink from '../../common/components/LocalizedLink';
 
 const arrayEqual = (a, b) =>
   a.length === b.length &&
@@ -16,7 +16,9 @@ const DesktopNavigation = () => {
   const [hoverPath, setHoverPath] = useState([]);
   const [isTouching, setTouching] = useState(false);
 
-  const { assortmentTree } = useCategoriesTree({ root: 'shop' });
+  const { assortmentTree } = useCategoriesTree({
+    root: 'shop',
+  });
 
   const handleClick = (node) => (event) => {
     if (isTouching && node.children) {
@@ -57,7 +59,7 @@ const DesktopNavigation = () => {
         onTouchEnd={handleTouchEnd}
       >
         <div key="shop" className="d-inline-block">
-          <Link href="/shop">
+          <LocalizedLink href="/shop">
             <a
               className="nav--main__item py-3 d-flex align-items-center"
               data-in-hover-path={hoverPath.includes(assortmentTree.slug)}
@@ -77,7 +79,7 @@ const DesktopNavigation = () => {
               <Icon className="mr-2" icon="navigation-menu" />
               {intl.formatMessage({ id: 'menu' })}
             </a>
-          </Link>
+          </LocalizedLink>
           {hoverPath.includes(assortmentTree.slug) && (
             <MegaDropdown {...assortmentTree} />
           )}

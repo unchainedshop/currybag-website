@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 import { useIntl } from 'react-intl';
 import renderPrice from '../../common/utils/renderPrice';
@@ -8,26 +7,28 @@ import useUser from '../../auth/hooks/useUser';
 import { CartContext } from '../CartContext';
 import Icon from '../../common/components/Icon';
 import CartItem from './CartItem';
+import LocalizedLink from '../../common/components/LocalizedLink';
 
 const SideCart = ({ isOpen }) => {
   const { user } = useUser();
   const intl = useIntl();
   const context = useContext(CartContext);
   const router = useRouter();
+  const reviewPath = `/checkout?next=review`;
+
+  const checkoutPath = 'checkout';
 
   const checkOut = () => {
     context.toggleCart(false);
-    const path = user?.isGuest ?? true ? '/checkout?next=review' : '/review';
+    const path = user?.isGuest ?? true ? reviewPath : checkoutPath;
     router.push(path);
   };
 
   const subtotal = (user?.cart?.items || []).reduce(
-    (acc, item) => {
-      return {
-        ...acc,
-        amount: acc.amount + (item?.total?.amount || 0),
-      };
-    },
+    (acc, item) => ({
+      ...acc,
+      amount: acc.amount + (item?.total?.amount || 0),
+    }),
     {
       currency: user?.cart?.itemsTotal?.currency,
       amount: 0,
@@ -50,11 +51,11 @@ const SideCart = ({ isOpen }) => {
             <Icon icon="shopping-bag-sad" />
             <p>
               {intl.formatMessage({ id: 'no_product_in_cart' })}{' '}
-              <Link href="/shop">
+              <LocalizedLink href="/shop">
                 <a onClick={() => context.toggleCart(false)} className="link">
                   {intl.formatMessage({ id: 'shop' })}
                 </a>
-              </Link>
+              </LocalizedLink>
             </p>
           </div>
         </>
@@ -84,7 +85,7 @@ const SideCart = ({ isOpen }) => {
               {user?.cart?.items.length === 0 ? (
                 <p>
                   {intl.formatMessage({ id: 'no_product_in_cart' })}{' '}
-                  <Link href="/shop">
+                  <LocalizedLink href="/shop">
                     <a
                       onClick={() => context.toggleCart(false)}
                       className="link"
@@ -92,7 +93,7 @@ const SideCart = ({ isOpen }) => {
                     >
                       {intl.formatMessage({ id: 'shop' })}.
                     </a>
-                  </Link>
+                  </LocalizedLink>
                 </p>
               ) : (
                 (user?.cart?.items || []).map((item) => (
@@ -115,14 +116,18 @@ const SideCart = ({ isOpen }) => {
               >
                 {intl.formatMessage({ id: 'to_checkout' })}
               </a>
-              <Link href={`${localStorage.getItem('lastVisitedCategory') || '/shop'}`}>
+              <LocalizedLink
+                href={`${
+                  localStorage.getItem('lastVisitedCategory') || '/shop'
+                }`}
+              >
                 <a
                   className="button button--secondary text-uppercase w-75 mb-3"
                   onClick={() => context.toggleCart(false)}
                 >
                   {intl.formatMessage({ id: 'continue_shopping' })}
                 </a>
-              </Link>
+              </LocalizedLink>
             </div>
           </div>
         </>

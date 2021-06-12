@@ -35,7 +35,18 @@ const CategoryDetail = () => {
     includeLeaves: true,
   });
 
-  const assortmentPaths = getAssortmentPath(paths);
+  const assortmentPaths = getAssortmentPath(paths, 'shop');
+  useEffect(() => {
+    if (texts) {
+      const actualRoute = `${
+        !assortmentPaths?.length ? '/shop' : ''
+      }/${assortmentPaths
+        ?.map((a) => a.slug)
+        .concat(texts?.slug)
+        .join('/')}`;
+      if (router.asPath !== actualRoute) router.replace(actualRoute);
+    }
+  }, [texts]);
 
   useEffect(() => {
     setcurrentUrl(window.location.href);

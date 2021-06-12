@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import LocalizedLink from '../../common/components/LocalizedLink';
 
 import useLoginWithPassword from '../hooks/useLoginWithPassword';
 
@@ -11,10 +11,11 @@ const LoginForm = ({ onLogin }) => {
   const { loginWithPassword, error } = useLoginWithPassword();
   const hasErrors = Object.keys(errors).length > 0;
   useEffect(() => {
-    setError(
-      'email',
-      { type: 'manual', message: `👷‍♀️ ${intl.formatMessage({ id: 'invalid_email_password' })}`, shouldFocus: true }
-    );
+    setError('email', {
+      type: 'manual',
+      message: `👷‍♀️ ${intl.formatMessage({ id: 'invalid_email_password' })}`,
+      shouldFocus: true,
+    });
   }, [error]);
 
   const onSubmit = async ({ email, password }) => {
@@ -54,13 +55,13 @@ const LoginForm = ({ onLogin }) => {
             name="password"
             ref={register({ required: true })}
           />
-          <Link href="/account/forget-password">
+          <LocalizedLink href="/account/forget-password">
             <a className="mt-2 text-right">
               <small id="passwordForgot" className="form-text text-muted">
                 {intl.formatMessage({ id: 'forgot_password' })}
               </small>
             </a>
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
       {hasErrors

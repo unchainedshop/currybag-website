@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -12,6 +11,7 @@ import Header from '../../modules/layout/components/Header';
 import useRemoveEmail from '../../modules/auth/hooks/useRemoveEmail';
 import useAddEmail from '../../modules/auth/hooks/useAddEmail';
 import useResendVerificationEmail from '../../modules/auth/hooks/useResendVerificationEmail';
+import LocalizedLink from '../../modules/common/components/LocalizedLink';
 
 const Account = () => {
   const { user } = useUser();
@@ -106,11 +106,11 @@ const Account = () => {
                     {intl.formatMessage({ id: 'password' })}
                   </span>
                   <span className="mb-1">
-                    <Link href="account/change-password">
-                      <a className="button button--secondary">
+                    <LocalizedLink href="/account/change-password">
+                      <a className="button button--secondary" type="button">
                         {intl.formatMessage({ id: 'change_password' })}
                       </a>
-                    </Link>
+                    </LocalizedLink>
                   </span>
                 </div>
                 <div>
@@ -120,7 +120,7 @@ const Account = () => {
                       className="d-flex flex-column flex-sm-row justify-content-between mb-2"
                     >
                       <span className="mb-1">
-                        {i + 1}. {intl.formatMessage({ id: 'email' })}
+                        {i + 1}.{intl.formatMessage({ id: 'email' })}
                       </span>
                       <span className="mb-1">
                         {e.address}

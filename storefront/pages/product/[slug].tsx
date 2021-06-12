@@ -25,7 +25,8 @@ const Detail = () => {
     slug: router.query.slug,
   });
 
-  const productPath = getAssortmentPath(paths);
+  const productPath = getAssortmentPath(paths, 'shop');
+
   useEffect(() => {
     setcurrentUrl(window.location.href);
   }, []);

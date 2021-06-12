@@ -5,6 +5,7 @@ console.log(process.version);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('./node_env');
 const fs = require('fs');
+const generateRewritesFromRoutes = require('./generateRouteRewrites');
 
 function extractDomain(string) {
   try {
@@ -14,6 +15,8 @@ function extractDomain(string) {
     return null;
   }
 }
+
+console.log(generateRewritesFromRoutes());
 
 const {
   FRONTEND_URL,
@@ -61,5 +64,8 @@ module.exports = {
   i18n: {
     locales: Object.keys(theme.locales),
     defaultLocale: Object.keys(theme.locales)[0],
+  },
+  async rewrites() {
+    return [...generateRewritesFromRoutes()];
   },
 };
